@@ -16,10 +16,8 @@ def signup():
         password = request.form['password']
         with backend.connect("sql.db") as conn:
             backend.new_user_login(username,password,conn)
-            session['uid'] = 
+            session['username'] = username 
             return "login success!"
-
-
     return render_template("signup.html")
 
 app.run()
