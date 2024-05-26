@@ -3,9 +3,7 @@ from utils import *
 import bcrypt
 
 
-def new_user_login(
-    username: str, password: str, connection: sqlite3.Connection
-):
+def new_user_login(username: str, password: str, connection: sqlite3.Connection):
     """adds the user to user table"""
     with connection:
         cursor = connection.cursor()
@@ -37,9 +35,7 @@ def user_login(username: str, password: str, connection: sqlite3.Connection):
             return "username doesnt exist :("
 
 
-def add_files_to_user(
-    username: str, filepath: str, connection: sqlite3.Connection
-):
+def add_files_to_user(username: str, filepath: str, connection: sqlite3.Connection):
     """add file path to table"""
     with connection:
         cur = connection.cursor()
