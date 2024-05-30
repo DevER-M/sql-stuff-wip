@@ -3,6 +3,13 @@ from utils import *
 import bcrypt
 
 
+class LoginInvalid(Exception):
+    pass
+
+
+
+
+
 def new_user_login(username: str, password: str, connection: sqlite3.Connection):
     """adds the user to user table"""
     with connection:
@@ -28,11 +35,11 @@ def user_login(username: str, password: str, connection: sqlite3.Connection):
         if user_already_exists(cursor, hashed_username):
             salted_password = password_from_db(cursor, username)
             if bcrypt.checkpw(password.encode(), salted_password):
-                return "logged in!"
+                return True
             else:
-                return "wrong password"
+                return LoginInvalid("Password Invalid")
         else:
-            return "username doesnt exist :("
+            return LoginInvalid("Username does not exist")
 
 
 def add_files_to_user(username: str, filepath: str, connection: sqlite3.Connection):
