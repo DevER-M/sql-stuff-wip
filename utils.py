@@ -27,18 +27,21 @@ def create_files_table(cursor: sqlite3.Cursor):
             );"""
     )
 
-def create_table(name:str,cursor:sqlite3.Cursor):
+
+def create_table(name: str, cursor: sqlite3.Cursor):
     try:
-        cursor.execute(f"""create table if not exists {name} (
+        cursor.execute(
+            f"""create table if not exists {name} (
                 id integer primary key AUTOINCREMENT,
                 user_id integer,
                 filepath text,
                 foreign key (user_id) references users(id)
-            );""")
+            );"""
+        )
         return True
     except Exception as e:
         return e
-    
+
 
 def hash(string: str):
     """hashes string to sha256 and returns hexdigest"""

@@ -36,14 +36,12 @@ class File(db.Model):
 
     def __repr__(self):
         return f"File({self.id}, {self.user_id})"
-    
 
 
 with app.app_context():
     db.create_all()
     user1 = User()
-    user1.name="aname"
-    
-    
+    user1.name = "aname"
+
     db.session.add(user1)
     db.session.commit()
