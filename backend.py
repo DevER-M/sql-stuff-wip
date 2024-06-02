@@ -7,7 +7,7 @@ class LoginInvalid(Exception):
     pass
 
 
-def new_user_login(username: str, password: str, connection: sqlite3.Connection):
+def new_user_login(username, password, connection: sqlite3.Connection):
     """adds the user to user table"""
     with connection:
         cursor = connection.cursor()
@@ -52,12 +52,3 @@ def add_files_to_user(username: str, filepath: str, connection: sqlite3.Connecti
             return "User not found!"
 
 
-if __name__ == "__main__":
-    with connect() as conn:
-        c = conn.cursor()
-        create_users_table(c)
-        create_files_table(c)
-        print(new_user_login("idk", "1234", conn))
-        print(show_table(c, "users"))
-        print(new_user_login("tuntun1234", "nicepassword", conn))
-        print(user_login("sioj", "1234", conn))

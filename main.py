@@ -1,10 +1,12 @@
 from flask import Flask, request, render_template, session, redirect, flash
 from backend import *
 from flask_session import Session
+from forms import LoginForm,RegisterForm
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['SECRET_KEY'] = "iuhe398h432u8hnf401fhni32"
 Session(app)
 
 
@@ -27,11 +29,10 @@ def newtable(tablename: str):
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        return new_user_login(username, password, connect("sql.db"))
-    return render_template("signup.html")
+    form:RegisterForm = RegisterForm()
+    if form.validate_on_submit():
+        return new_user_login(form.username.data,form.password.data,connect("sql.db"))
+    return render_template("signup.html",form=form)
 
 
 @app.route("/")
