@@ -1,17 +1,17 @@
-from fileshare import app
+import bcrypt
+from fileshare import app,db
+from sqlalchemy import select
 from fileshare.forms import RegisterForm,LoginForm
 from flask import render_template, session, redirect, flash
 from fileshare.utils import show_table,create_table,connect
-from fileshare.backend import (
-    new_user_login,
-    user_login,
-    LoginInvalid,
-)
+from fileshare.models import User,File
 
-@app.route("/show_table/<table>")
-def showtable(table: str):
-    temp_cursor = connect("sql.db").cursor()
-    return str(show_table(temp_cursor, table))
+@app.route("/show_table/")
+def showtable():
+    u = select(User)
+    allusers = [e for e in db.session.execute(u).scalars().all()]
+    return allusers
+
 
 
 @app.route("/create_table/<tablename>")
@@ -29,7 +29,11 @@ def newtable(tablename: str):
 def register():
     form: RegisterForm = RegisterForm()
     if form.validate_on_submit():
-        return new_user_login(form.username.data, form.password.data, connect("sql.db"))
+        salted_password = bcrypt.hashpw(str(form.password.data).encode(), bcrypt.gensalt())
+        user = User(form.username.data,form.email.data,salted_password)
+        db.session.add(user)
+        db.session.commit()
+        return redirect("/login")
     return render_template("signup.html", form=form)
 
 
@@ -37,26 +41,23 @@ def register():
 def root():
     if not session.get("email"):
         return redirect("/login")
-    return f"hi {session["username"]}"
+    return f"hi {session["email"]}"
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form:LoginForm = LoginForm()
     if form.validate_on_submit():
-        try:
-            user_login(form.email.data,form.password.data,connect("sql.db"))
-            session["loggedin"] = True
-            session["email"] = form.email.data
-        except LoginInvalid as e:
-            return str(e)
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.checkpw(user.password,form.password.data):
+            redirect("/")
 
     return render_template("login.html",form=form)
 
 
 @app.route("/logout")
 def logout():
-    session.pop("username")
-    session.pop("logged_in", None)
+    session.pop("email")
+    session.pop("loggedin", None)
     flash("logged out!", "info")
     return redirect("/login")

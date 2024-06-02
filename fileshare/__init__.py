@@ -2,6 +2,7 @@ from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
+from models import User,File
 
 
 class Base(DeclarativeBase):
@@ -14,10 +15,11 @@ db = SQLAlchemy(model_class=Base)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SECRET_KEY"] = "iuhe398h432u8hnf401fhni32"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sql.db"
 
 db.init_app(app)
 Session(app)
-
+with app.app_context():
+    db.create_all()
 
 from fileshare import routes
