@@ -1,14 +1,7 @@
-from flask import Flask, request, render_template, session, redirect, flash
-from backend import *
-from flask_session import Session
-from forms import LoginForm, RegisterForm
-
-app = Flask(__name__)
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-app.config["SECRET_KEY"] = "iuhe398h432u8hnf401fhni32"
-Session(app)
-
+from backend import show_table,create_table,connect,new_user_login,user_login,create_files_table,create_users_table,LoginInvalid
+from flask import request, render_template, session, redirect, flash
+from main import app
+from forms import RegisterForm
 
 @app.route("/show_table/<table>")
 def showtable(table: str):
@@ -64,11 +57,3 @@ def logout():
     session.pop("logged_in", None)
     flash("logged out!", "info")
     return redirect("/login")
-
-
-if __name__ == "__main__":
-    with connect("sql.db") as conn:
-        cur = conn.cursor()
-        create_files_table(cur)
-        create_users_table(cur)
-    app.run()
