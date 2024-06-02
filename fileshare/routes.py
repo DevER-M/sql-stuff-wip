@@ -1,8 +1,8 @@
-from . import app
-from forms import RegisterForm
-from flask import request, render_template, session, redirect, flash
-from utils import show_table,create_table,connect
-from backend import (
+from fileshare import app
+from fileshare.forms import RegisterForm,LoginForm
+from flask import render_template, session, redirect, flash
+from fileshare.utils import show_table,create_table,connect
+from fileshare.backend import (
     new_user_login,
     user_login,
     LoginInvalid,
@@ -35,25 +35,23 @@ def register():
 
 @app.route("/")
 def root():
-    if not session.get("username"):
+    if not session.get("email"):
         return redirect("/login")
     return f"hi {session["username"]}"
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    with connect("sql.db") as conn:
-        if request.method == "POST":
-            username = request.form["username"]
-            password = request.form["password"]
-            try:
-                user_login(username, password, conn)
-                session["username"] = username
-                session["logged_in"] = True
-                return "logged in nice"
-            except LoginInvalid as e:
-                return str(e)
-        return render_template("login.html")
+    form:LoginForm = LoginForm()
+    if form.validate_on_submit():
+        try:
+            user_login(form.email.data,form.password.data,connect("sql.db"))
+            session["loggedin"] = True
+            session["email"] = form.email.data
+        except LoginInvalid as e:
+            return str(e)
+
+    return render_template("login.html",form=form)
 
 
 @app.route("/logout")

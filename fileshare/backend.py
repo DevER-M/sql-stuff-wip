@@ -1,6 +1,6 @@
 import sqlite3
 import bcrypt
-from utils import user_already_exists, insert, password_from_db, select_in_db
+from fileshare.utils import user_already_exists, insert, password_from_db, select_in_db
 
 
 class LoginInvalid(Exception):
@@ -24,7 +24,7 @@ def new_user_login(username, password, connection: sqlite3.Connection):
             return "Made an account :0"
 
 
-def user_login(username: str, password: str, connection: sqlite3.Connection):
+def user_login(username, password, connection: sqlite3.Connection):
     with connection:
         cursor = connection.cursor()
         if user_already_exists(cursor, username):
