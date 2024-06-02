@@ -1,6 +1,6 @@
 import sqlite3
-from utils import *
 import bcrypt
+from utils import user_already_exists, insert, password_from_db, select_in_db
 
 
 class LoginInvalid(Exception):
