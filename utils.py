@@ -20,7 +20,7 @@ def create_users_table(cursor: sqlite3.Cursor):
 def create_files_table(cursor: sqlite3.Cursor):
     cursor.execute(
         """create table if not exists files (
-                id integer primary key AUTOINCREMENT,
+                id integer primary key autoincrement,
                 user_id integer,
                 filepath text,
                 foreign key (user_id) references users(id)
