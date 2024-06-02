@@ -1,9 +1,8 @@
 from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 from sqlalchemy.orm import DeclarativeBase
-from models import User,File
-
 
 class Base(DeclarativeBase):
     pass
@@ -11,6 +10,7 @@ class Base(DeclarativeBase):
 
 app = Flask(__name__)
 db = SQLAlchemy(model_class=Base)
+bcrypt = Bcrypt(app)
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"

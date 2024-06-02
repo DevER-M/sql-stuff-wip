@@ -1,5 +1,5 @@
 import sqlite3
-import bcrypt
+from fileshare import bcrypt
 from fileshare.utils import user_already_exists, insert, password_from_db, select_in_db
 
 
@@ -11,7 +11,7 @@ def new_user_login(username, password, connection: sqlite3.Connection):
     """adds the user to user table"""
     with connection:
         cursor = connection.cursor()
-        salted_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        salted_password = bcrypt.generate_password_hash(password.encode())
         if user_already_exists(cursor, username):
             return "username already exists try another one :("
 
