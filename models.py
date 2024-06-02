@@ -1,47 +1,43 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import os
-from sqlalchemy import Column, Integer, Text, ForeignKey, BLOB
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import DeclarativeBase
 
+class Base(DeclarativeBase):
+  pass
+
+db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.urandom(20)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sql.db"
-db = SQLAlchemy(app)
-Base = declarative_base()
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
+
+db.init_app(app)
+
+
+from sqlalchemy import Integer, String,BLOB,ForeignKey
+from sqlalchemy.orm import mapped_column
 
 class User(db.Model):
-    __tablename__ = "user"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(Text, nullable=False)
-    password = Column(BLOB, nullable=False)
+    id = mapped_column(Integer,primary_key=True)
+    username = mapped_column(String(30),unique=True)
+    email = mapped_column(String,unique=True)
 
-    # Relationship to files
-    files = relationship("File", back_populates="user")
+    def __init__(self,username,email):
+       self.username = username
+       self.email = email
 
-    def __repr__(self):
-        return f"User({self.id}, {self.name})"
+class Files(db.Model):
+    id = mapped_column(Integer,primary_key=True)
+    user_id = mapped_column(ForeignKey("user.id"),unique=True)
+    file = mapped_column(BLOB,unique=True)
 
+    def __init__(self,username,email):
+       self.username = username
+       self.email = email
 
-class File(db.Model):
-    __tablename__ = "file"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    file_content = Column(BLOB, nullable=False)
-
-    # Relationship to user
-    user = relationship("User", back_populates="files")
-
-    def __repr__(self):
-        return f"File({self.id}, {self.user_id})"
-
-
+import random
 with app.app_context():
     db.create_all()
-    user1 = User()
-    user1.name = "aname"
-
-    db.session.add(user1)
+    user = User(username=str(random.randbytes(10).hex()),email=str(random.randbytes(10).hex()))
+    db.session.add(user)
     db.session.commit()
+
