@@ -1,7 +1,15 @@
-from backend import show_table,create_table,connect,new_user_login,user_login,create_files_table,create_users_table,LoginInvalid
-from flask import request, render_template, session, redirect, flash
-from main import app
+from . import app
 from forms import RegisterForm
+from flask import request, render_template, session, redirect, flash
+from backend import (
+    show_table,
+    create_table,
+    connect,
+    new_user_login,
+    user_login,
+    LoginInvalid,
+)
+
 
 @app.route("/show_table/<table>")
 def showtable(table: str):
