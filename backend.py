@@ -50,5 +50,3 @@ def add_files_to_user(username: str, filepath: str, connection: sqlite3.Connecti
 
         else:
             return "User not found!"
-
-
