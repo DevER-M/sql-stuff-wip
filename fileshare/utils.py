@@ -74,7 +74,9 @@ def user_already_exists(cursor: sqlite3.Cursor, hashed_username: str):
 
 def password_from_db(cursor: sqlite3.Cursor, username: str):
     hashed_username = hash(username)
-    cursor.execute("SELECT password FROM users WHERE name=?", (hashed_username,))
+    cursor.execute(
+        "SELECT password FROM users WHERE name=?", (hashed_username,)
+    )
     result = cursor.fetchone()
     return bytes(result[0]) if result else b""
 

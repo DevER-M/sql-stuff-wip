@@ -1,6 +1,11 @@
 import sqlite3
 from fileshare import bcrypt
-from fileshare.utils import user_already_exists, insert, password_from_db, select_in_db
+from fileshare.utils import (
+    user_already_exists,
+    insert,
+    password_from_db,
+    select_in_db,
+)
 
 
 class LoginInvalid(Exception):
@@ -37,7 +42,9 @@ def user_login(username, password, connection: sqlite3.Connection):
             return LoginInvalid("Username does not exist")
 
 
-def add_files_to_user(username: str, filepath: str, connection: sqlite3.Connection):
+def add_files_to_user(
+    username: str, filepath: str, connection: sqlite3.Connection
+):
     """add file path to table"""
     with connection:
         cur = connection.cursor()
