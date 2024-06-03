@@ -1,4 +1,4 @@
-from . import db
+from fileshare import db
 from sqlalchemy.orm import mapped_column
 from sqlalchemy import Integer, String, BLOB, ForeignKey
 

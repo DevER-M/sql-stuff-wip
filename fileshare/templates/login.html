@@ -1,11 +1,18 @@
 {% extends "layout.html" %}
 {% block body %}
-    <h2>Log In</h2>
-    <form method="POST">
+    <h2 class="border-bottom">Log In</h2>
+    <form  class="form form-horizontal" method="POST">
+        <div class="form-group">
         {{ form.hidden_tag() }}
-        {{ form.email.label }} {{ form.email }}<br>
-        {{ form.password.label }} {{ form.password }}<br>
-        {{ form.submit }}
+        {{ form.email(class="form-control form-control-sm", placeholder="Enter email") }}
+        </div>
+        <div class="form-group">
+            {{ form.password(class="form-control form-control-sm", placeholder="Enter Password") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+        
     </form>
 {% endblock body%}
 

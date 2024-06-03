@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock title%}
+{% block body %}
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>
+                {% if username %}
+                    Hello {{  username }}!
+                {% else %}
+                    <p>File share thing. You can login logout store files (still not done)
+
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel quisquam molestias perferendis voluptatum quibusdam illum at quos eius adipisci pariatur ipsa debitis eveniet quo alias exercitationem, voluptas, aut sequi reprehenderit!
+                    </p>
+                {% endif %}
+            </h1>
+        </div>
+    </div>
+</main>
+{% endblock body%}

@@ -3,26 +3,14 @@ from sqlalchemy import select
 from fileshare.forms import RegisterForm, LoginForm
 from flask import render_template, session, redirect, flash
 from fileshare import bcrypt
-from fileshare.utils import show_table, create_table, connect
 from fileshare.models import User, File
 
 
 @app.route("/show_table/")
 def showtable():
     u = select(User)
-    allusers = [e for e in db.session.execute(u).scalars().all()]
+    allusers = db.session.execute(u).scalars().all()
     return str(allusers)
-
-
-@app.route("/create_table/<tablename>")
-def newtable(tablename: str):
-    temp_cursor = connect("sql.db").cursor()
-    result = create_table(tablename, temp_cursor)
-    print(result)
-    if result:
-        return str(show_table(temp_cursor, tablename))
-    else:
-        return result
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -40,9 +28,10 @@ def register():
 @app.route("/home")
 @app.route("/")
 def root():
-    if not session.get("email"):
-        return redirect("/login")
-    return f"hi {session["email"]}"
+    try: 
+        username = User.query.filter_by(email=session["email"]).first().username
+    except: username =  None
+    return render_template("home.html",username=username)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -68,4 +57,9 @@ def logout():
     session.pop("email")
     session.pop("loggedin", None)
     flash("logged out!", "info")
-    return redirect("/login")
+    return redirect("/home")
+
+@app.route("/account")
+def account():
+    user = User.query.filter_by(email=session.get("email")).first()
+    return render_template("account.html",user=user)

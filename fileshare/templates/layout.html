@@ -1,20 +1,45 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Share</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>File Share</title>
+    {% endif %}
+    <style>
+        .bg-pur {
+            background-color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar vbar-fixed-top navbar-dark bg-pur">
+        <div class="container">
+            {% if username %}
+                <a class="navbar-brand mr-1" href="/logout">Logout</a>   
+                <a class="navbar-brand mr-1" href="/account">Account</a>
+            {% else %}
+                <a class="navbar-brand mr-1" href="/register">Register</a>
+                <a class="navbar-brand mr-1" href="/login">Login</a>
+            {% endif %}
+        </div>
+    </div>
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class=flashes>
+    {% if messages %}
+        <ul class=flashes>
             {% for message in messages %}
-            <p>{{ message }}</p>
+                <p>{{ message }}</p>
             {% endfor %}
-            </ul>
-        {% endif %}
+        </ul>
+    {% endif %}
     {% endwith %}
     
-</head>
-<body>
     {% block body %}{% endblock %}
+    
 </body>
 </html>
