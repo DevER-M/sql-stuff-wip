@@ -30,7 +30,8 @@ def register():
 def root():
     try: 
         username = User.query.filter_by(email=session["email"]).first().username
-    except: username =  None
+    except: 
+        username =  None
     return render_template("home.html",username=username)
 
 
