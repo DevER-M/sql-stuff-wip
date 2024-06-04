@@ -1,10 +1,10 @@
 from fileshare import app, db
 from sqlalchemy import select
 from fileshare.forms import RegisterForm, LoginForm
-from flask import render_template, session, redirect, flash
+from flask import render_template, redirect, flash
 from fileshare import bcrypt
 from fileshare.models import User
-from flask_login import login_user,logout_user,login_required,current_user
+from flask_login import login_user, logout_user, login_required, current_user
 
 
 @app.route("/show_table/")
@@ -31,11 +31,13 @@ def register():
 @app.route("/home")
 @app.route("/")
 def root():
-    try: 
-        username = User.query.filter_by(email=session["email"]).first().username
-    except: 
-        username =  None
-    return render_template("home.html",username=username)
+    try:
+        username = (
+            User.query.filter_by(email=session["email"]).first().username
+        )
+    except:
+        username = None
+    return render_template("home.html", username=username)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -46,7 +48,7 @@ def login():
         if user and bcrypt.check_password_hash(
             user.password, form.password.data
         ):
-            login_user(user,remember=True)
+            login_user(user, remember=True)
             flash("Logged in!")
             return redirect("/home")
         else:
@@ -55,6 +57,7 @@ def login():
 
     return render_template("login.html", form=form)
 
+
 @login_required
 @app.route("/logout")
 def logout():
@@ -62,7 +65,10 @@ def logout():
     flash("Logged out!", "info")
     return redirect("/home")
 
+
 @login_required
 @app.route("/account")
 def account():
-    return render_template("account.html",)
+    return render_template(
+        "account.html",
+    )

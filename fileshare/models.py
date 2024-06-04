@@ -1,8 +1,7 @@
-from fileshare import db,login_manager
+from fileshare import db, login_manager
 from sqlalchemy.orm import mapped_column
 from sqlalchemy import Integer, String, BLOB, ForeignKey
 from flask_login import UserMixin
-
 
 
 @login_manager.user_loader
@@ -10,7 +9,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class User(db.Model,UserMixin):
+class User(db.Model, UserMixin):
     id = mapped_column(Integer, primary_key=True, autoincrement=True)
     username = mapped_column(String(30), unique=True)
     email = mapped_column(String, unique=True)
