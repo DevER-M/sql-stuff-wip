@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-md-8">
             <h1>
-                {% if username %}
-                    Hello {{  username }}!
+                {% if current_user.is_authenticated %}
+                    Hi {{ current_user.username }}!
                 {% else %}
             </h1>
             <p>File share thing. You can login logout store files (still not done)

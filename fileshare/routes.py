@@ -3,7 +3,8 @@ from sqlalchemy import select
 from fileshare.forms import RegisterForm, LoginForm
 from flask import render_template, session, redirect, flash
 from fileshare import bcrypt
-from fileshare.models import User, File
+from fileshare.models import User
+from flask_login import login_user,logout_user,login_required,current_user
 
 
 @app.route("/show_table/")
@@ -15,6 +16,8 @@ def showtable():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if current_user.is_authenticated:
+        return redirect("/home")
     form: RegisterForm = RegisterForm()
     if form.validate_on_submit():
         salted_password = bcrypt.generate_password_hash(form.password.data)
@@ -43,8 +46,7 @@ def login():
         if user and bcrypt.check_password_hash(
             user.password, form.password.data
         ):
-            session["email"] = user.email
-            session["loggedin"] = True
+            login_user(user,remember=True)
             flash("Logged in!")
             return redirect("/home")
         else:
@@ -53,14 +55,14 @@ def login():
 
     return render_template("login.html", form=form)
 
-
+@login_required
 @app.route("/logout")
 def logout():
-    session.pop("email")
-    session.pop("loggedin", None)
+    logout_user()
     flash("Logged out!", "info")
     return redirect("/home")
 
+@login_required
 @app.route("/account")
 def account():
     user = User.query.filter_by(email=session.get("email")).first()

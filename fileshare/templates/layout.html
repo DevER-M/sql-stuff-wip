@@ -23,7 +23,7 @@
 
   <body>
     <div class="navbar vbar-fixed-top navbar-dark bg-pur">
-      {% if username %}
+      {% if current_user.is_authenticated %}
       <a href="/home" class="navbar-brand"> 
         <img src="{{ url_for('static',filename='icon.svg') }}"/> 
         File Share
