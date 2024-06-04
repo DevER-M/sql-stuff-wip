@@ -1,5 +1,5 @@
-from fileshare.utils import *
-from fileshare.backend import *
+from old.utils import *
+from old.backend import *
 import random
 
 with connect() as conn:

@@ -1,6 +1,6 @@
 import sqlite3
-from fileshare import bcrypt
-from fileshare.utils import (
+import bcrypt # must use flask bcrypt
+from old.utils import (
     user_already_exists,
     insert,
     password_from_db,
