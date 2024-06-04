@@ -1,43 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='main.css') }}"
+    />
     {% if title %}
-        <title>{{ title }}</title>
+    <title>{{ title }}</title>
     {% else %}
-        <title>File Share</title>
+    <title>File Share</title>
     {% endif %}
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="navbar vbar-fixed-top navbar-dark bg-pur">
-        <div class="container">
-            {% if username %}
-                <img src="{{ url_for('static',filename='icon.svg') }}">
-                <a class="navbar-brand mr-1" href="/logout">Logout</a>   
-                <a class="navbar-brand mr-1" href="/account">Account</a>
-            {% else %}
-                <img src="{{url_for('static',filename='icon.svg')}}">
-                <a class="navbar-brand mr-1" href="/register">Register</a>
-                <a class="navbar-brand mr-1" href="/login">Login</a>
-            {% endif %}
-        </div>
+      {% if username %}
+      <img src="{{ url_for('static',filename='icon.svg') }}" />
+      <a class="navbar-brand" href="/account">Account</a>
+      <a class="navbar-brand" href="/logout">Logout</a>
+
+      {% else %}
+      <img src="{{url_for('static',filename='icon.svg')}}" />
+      <a class="navbar-brand" href="/register">Register</a>
+      <a class="navbar-brand" href="/login">Login</a>
+      {% endif %}
     </div>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul class=flashes>
+    <main role="main" class="container">
+      {% with messages = get_flashed_messages() %} 
+        {% if messages %} 
             {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% endwith %}
-    
-    <div class="container pt-4">
-        {% block body %}{% endblock %}
-    </div>
-</body>
+                <div class="alert alert-dark alert-dismissible fade show" role="alert">
+                {{ message }}
+                    <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close"
+                    >
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+      {% endfor %} {% endif %} {% endwith %} {% block body %}{% endblock %}
+    </main>
+  </body>
 </html>

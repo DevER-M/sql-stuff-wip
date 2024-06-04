@@ -63,4 +63,4 @@ def logout():
 @app.route("/account")
 def account():
     user = User.query.filter_by(email=session.get("email")).first()
-    return render_template("account.html",user=user)
+    return render_template("account.html",user=user,username=user.username)

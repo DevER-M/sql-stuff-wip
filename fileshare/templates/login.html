@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-    <h2 class="border-bottom">Log In</h2>
-    <form  class="form form-horizontal" method="POST">
+    <form  class="form form-horizontal pt-5" method="POST">
         <div class="form-group">
         {{ form.hidden_tag() }}
         {{ form.email(class="form-control form-control-sm", placeholder="Enter email") }}
