@@ -40,8 +40,21 @@
       <a class="navbar-text" href="/login">Login</a>
       {% endif %}
     </div>
+    <div class="row float-right mr-3 mt-4">
+    {% with messages = get_flashed_messages() %} 
+        {% if messages %} 
+            {% for message in messages %}
+                <div class="alert alert-dark fade show pt-2" role="alert">
+                    {{ message }}
+                </div>
+                <span aria-hidden="true">&times;</span>            
+                {% endfor %}
+        {% endif %} 
+        {% endwith %}
+    </div>
     <main role="main" class="container mt-4">
       {% block body %}{% endblock %}
     </main>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
 </html>

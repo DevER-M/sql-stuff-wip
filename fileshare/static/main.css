@@ -94,3 +94,7 @@ h1 {
 .navbar:hover {
     opacity: 0.97;
 }
+
+.alert {
+    border-radius: 15px 0px 15px 15px;
+}

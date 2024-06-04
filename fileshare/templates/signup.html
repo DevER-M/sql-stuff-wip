@@ -1,31 +1,49 @@
 {% extends "layout.html" %}
 {% block body %}
     <form  class="form form-horizontal" method="POST">
+        {{ form.hidden_tag() }}
         <h2>Signup</h2>
         <div class="form-group">
-            {{ form.hidden_tag() }}
-            {{ form.username(class="form-control form-control-sm", placeholder="Enter username") }}
+            {% if form.username.errors %}
+                {{ form.username(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+            {% else %}
+                {{ form.username(class="form-control form-control-sm", placeholder="Enter username") }}
+            {% endif %}
+            
         </div>
         <div class="form-group">
-        
-        {{ form.email(class="form-control form-control-sm", placeholder="Enter email") }}
+            {% if form.email.errors %}
+                {{ form.email(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.email(class="form-control form-control-sm", placeholder="Enter email") }}
+            {% endif %}      
         </div>
         <div class="form-group">
-            {{ form.password(class="form-control form-control-sm", placeholder="Enter password") }}
+            {% if form.password.errors %}
+            {{ form.password(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+                {{ form.password(class="form-control form-control-sm", placeholder="Enter password") }}
+            {% endif %}  
         </div>
         <div class="form-group">
             {{ form.submit(class="btn btn-primary") }}
             <p class="text-muted pt-1">Already have an account? <a href="/login">Login</a></p>
         </div>
-        {% with messages = get_flashed_messages() %} 
-        {% if messages %} 
-            {% for message in messages %}
-                <div class="alert alert-dark alert-dismissible fade show pt-2" role="alert">
-                  {{ message }}
-                </div>
-            {% endfor %} 
-        {% endif %} 
-        {% endwith %} 
     </form>
 {% endblock body%}
 

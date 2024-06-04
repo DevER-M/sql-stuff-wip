@@ -45,6 +45,7 @@ def login():
         ):
             session["email"] = user.email
             session["loggedin"] = True
+            flash("Logged in!")
             return redirect("/home")
         else:
             flash("make sure you enter the right email and password")
@@ -57,7 +58,7 @@ def login():
 def logout():
     session.pop("email")
     session.pop("loggedin", None)
-    flash("logged out!", "info")
+    flash("Logged out!", "info")
     return redirect("/home")
 
 @app.route("/account")

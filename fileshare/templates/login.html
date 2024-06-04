@@ -13,16 +13,6 @@
             {{ form.submit(class="btn btn-primary") }}
             <p class="text-muted pt-1">Don't have an account? <a href="/login">Login</a></p>
         </div>
-       
-        {% with messages = get_flashed_messages() %} 
-        {% if messages %} 
-            {% for message in messages %}
-                <div class="alert alert-dark alert-dismissible fade show pt-2" role="alert">
-                    {{ message }}
-                </div>            
-                {% endfor %}
-        {% endif %} 
-        {% endwith %} 
     </form>
 {% endblock body%}
 
