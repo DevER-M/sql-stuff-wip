@@ -98,3 +98,7 @@ h1 {
 .alert {
     border-radius: 15px 0px 15px 15px;
 }
+
+#hide {
+    transition: opacity 1s;
+}
