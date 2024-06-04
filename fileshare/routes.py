@@ -33,6 +33,9 @@ def register():
 @app.route("/home")
 @app.route("/")
 def root():
+    if current_user.is_authenticated:
+        files = File.query.filter_by(user_id=current_user.id).all()
+        return render_template("home.html",files=files)
     return render_template("home.html")
 
 
@@ -85,4 +88,9 @@ def upload():
         return render_template("upload.html",form=form)
     else:
         return render_template("upload.html",form=form)
+    
+@app.route("/download/<file_id>")
+def download(file_id):
+    file = File.query.filter_by(id=file_id).first()
+    return send_file(BytesIO(file.file),download_name=file.filename)
    

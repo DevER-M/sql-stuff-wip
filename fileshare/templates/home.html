@@ -1,4 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
-owwiufrufh
+{% if current_user.is_authenticated %}
+    {% for file in files %}
+        <h3><a href="/download/{{file.id}}">{{file.filename}}</a></h3>
+    {% endfor %}
+{% else %}
+    idk what
+{% endif %}
 {% endblock body%}
