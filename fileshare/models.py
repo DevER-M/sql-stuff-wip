@@ -30,12 +30,14 @@ class File(db.Model):
     id = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id = mapped_column(Integer, ForeignKey("user.id"), nullable=False)
     file = mapped_column(BLOB)
+    filename = mapped_column(String)
 
     user = db.relationship("User", back_populates="files")
 
     def __repr__(self):
         return f"File({self.id}, {self.user_id})"
 
-    def __init__(self, user_id, file):
+    def __init__(self, user_id, file,filename):
         self.user_id = user_id
         self.file = file
+        self.filename = filename

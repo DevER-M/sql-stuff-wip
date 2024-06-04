@@ -1,10 +1,12 @@
 from fileshare import app, db
 from sqlalchemy import select
-from fileshare.forms import RegisterForm, LoginForm
-from flask import render_template, redirect, flash
+from fileshare.forms import RegisterForm, LoginForm, AddFileForm
+from flask import render_template, redirect, flash,request,send_file
 from fileshare import bcrypt
-from fileshare.models import User
+from fileshare.models import User,File
+from werkzeug.utils import secure_filename
 from flask_login import login_user, logout_user, login_required, current_user
+from io import BytesIO
 
 
 @app.route("/show_table/")
@@ -66,3 +68,21 @@ def account():
     return render_template(
         "account.html",
     )
+
+@login_required
+@app.route("/upload",methods=["GET","POST"])
+def upload():
+    form: AddFileForm = AddFileForm()
+    if request.method=="POST" and current_user.is_authenticated:       
+        file = form.file.data
+        user_file = File(current_user.id,request.files["file"].read(),file.filename)
+        db.session.add(user_file)
+        db.session.commit()
+        flash("done")
+        return redirect("/upload")
+    elif not current_user.is_authenticated:
+        flash("Please login/register to upload files!")
+        return render_template("upload.html",form=form)
+    else:
+        return render_template("upload.html",form=form)
+   

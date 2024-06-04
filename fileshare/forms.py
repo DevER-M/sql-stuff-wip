@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, PasswordField, SubmitField
+from wtforms import StringField, EmailField, PasswordField, SubmitField,FileField
 from wtforms.validators import DataRequired, Email, Length, ValidationError
 from fileshare.models import User
 
@@ -29,3 +29,7 @@ class LoginForm(FlaskForm):
     email = EmailField("email", validators=[Email(), DataRequired()])
     password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("Log In")
+
+class AddFileForm(FlaskForm):
+    file = FileField("Upload File",validators=[DataRequired()])
+    submit = SubmitField("Upload")

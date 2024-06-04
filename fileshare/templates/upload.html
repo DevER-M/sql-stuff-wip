@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body%}
+<form method=post enctype=multipart/form-data class="form pt-5">
+    <h2>Upload Files</h2>
+    <div class="custom-file">
+        {{form.file(class="form-control form-control-sm")}}
+        {{form.submit(class="btn btn-primary mt-4")}}
+    </div>
+</form>
+{% endblock body %}
