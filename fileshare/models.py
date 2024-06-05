@@ -4,6 +4,7 @@ from sqlalchemy import Integer, String, BLOB, ForeignKey
 from flask_login import UserMixin
 from uuid import uuid4
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -37,7 +38,7 @@ class File(db.Model):
     def __repr__(self):
         return f"File({self.id}, {self.user_id}, {self.filename})"
 
-    def __init__(self, user_id, file,filename):
+    def __init__(self, user_id, file, filename):
         self.id = uuid4().__str__()
         self.user_id = user_id
         self.file = file

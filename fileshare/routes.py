@@ -1,9 +1,9 @@
 from fileshare import app, db
 from sqlalchemy import select
 from fileshare.forms import RegisterForm, LoginForm, AddFileForm
-from flask import render_template, redirect, flash,request,send_file
+from flask import render_template, redirect, flash, request, send_file
 from fileshare import bcrypt
-from fileshare.models import User,File
+from fileshare.models import User, File
 from werkzeug.utils import secure_filename
 from flask_login import login_user, logout_user, login_required, current_user
 from io import BytesIO
@@ -35,7 +35,7 @@ def register():
 def root():
     if current_user.is_authenticated:
         files = File.query.filter_by(user_id=current_user.id).all()
-        return render_template("home.html",files=files)
+        return render_template("home.html", files=files)
     return render_template("home.html")
 
 
@@ -44,9 +44,7 @@ def login():
     form: LoginForm = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(
-            user.password, form.password.data
-        ):
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=True)
             flash("Logged in!")
             return redirect("/home")
@@ -72,25 +70,26 @@ def account():
         "account.html",
     )
 
+
 @login_required
-@app.route("/upload",methods=["GET","POST"])
+@app.route("/upload", methods=["GET", "POST"])
 def upload():
     form: AddFileForm = AddFileForm()
-    if request.method=="POST" and current_user.is_authenticated:       
+    if request.method == "POST" and current_user.is_authenticated:
         file = form.file.data
-        user_file = File(current_user.id,request.files["file"].read(),file.filename)
+        user_file = File(current_user.id, request.files["file"].read(), file.filename)
         db.session.add(user_file)
         db.session.commit()
         flash("done")
         return redirect("/upload")
     elif not current_user.is_authenticated:
         flash("Please login/register to upload files!")
-        return render_template("upload.html",form=form)
+        return render_template("upload.html", form=form)
     else:
-        return render_template("upload.html",form=form)
-    
+        return render_template("upload.html", form=form)
+
+
 @app.route("/download/<file_id>")
 def download(file_id):
     file = File.query.filter_by(id=file_id).first()
-    return send_file(BytesIO(file.file),download_name=file.filename)
-   
+    return send_file(BytesIO(file.file), download_name=file.filename)
