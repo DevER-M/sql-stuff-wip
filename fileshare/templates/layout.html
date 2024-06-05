@@ -21,8 +21,10 @@
           <img src="{{ url_for('static',filename='icon.svg') }}"/> 
           File Share
         </a>
+        <a class="navbar-text" href="/upload">Upload</a>
         <a class="navbar-text" href="/account">Account</a>
         <a class="navbar-text" href="/logout">Logout</a>
+        
       {% else %}
         <a href="/home" class="navbar-brand">  
           <img src="{{url_for('static',filename='icon.svg')}}"/>

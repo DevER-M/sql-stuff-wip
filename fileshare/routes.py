@@ -92,4 +92,8 @@ def upload():
 @app.route("/download/<file_id>")
 def download(file_id):
     file = File.query.filter_by(id=file_id).first()
-    return send_file(BytesIO(file.file), download_name=file.filename)
+    if current_user.is_authenticated and current_user.id == file.user_id:
+        return send_file(BytesIO(file.file), download_name=file.filename)
+    else:
+        flash("File owner is different!")
+        return redirect("/home")
