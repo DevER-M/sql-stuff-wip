@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from sqlalchemy.orm import DeclarativeBase
@@ -21,7 +20,6 @@ app.config["SECRET_KEY"] = "iuhe398h432u8hnf401fhni32"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sql.db"
 
 db.init_app(app)
-Session(app)
 login_manager.init_app(app)
 
 with app.app_context():
