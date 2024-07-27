@@ -22,7 +22,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sql.db"
 db.init_app(app)
 login_manager.init_app(app)
 
+from fileshare.models import User, File
+
 with app.app_context():
     db.create_all()
-
 from fileshare import routes
